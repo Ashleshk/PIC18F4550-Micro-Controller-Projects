@@ -1,0 +1,283 @@
+//Program to Write and read from SPI EEPROM 25Cxxx
+
+#include "p18f4550.h"
+/*The following lines of code perform interrupt vector relocation to work with the USB bootloader. These must be used with every application program to run as a USB application.*/
+extern void _startup (void);
+#pragma code _RESET_INTERRUPT_VECTOR = 0x1000
+
+void _reset (void)
+{
+	_asm goto _startup _endasm
+}
+
+#pragma code
+#pragma code _HIGH_INTERRUPT_VECTOR = 0x1008
+void high_ISR (void)
+{
+}
+
+#pragma code
+#pragma code _LOW_INTERRUPT_VECTOR = 0x1018
+void low_ISR (void)
+{
+}
+#pragma code
+/*End of interrupt vector relocation*/
+
+//LCD data pins connected to PORTD and control pins connected to PORTE
+#define LCD_DATA    	PORTD               //LCD data port
+#define ctrl        	PORTE               //LCD signal port
+#define en          	PORTEbits.RE2      // enable signal
+#define rw          	PORTEbits.RE1      // read/write signal
+#define rs          	PORTEbits.RE0     // register select signal
+#define CS_EEPROM_T		TRISCbits.TRISC6
+#define CS_EEPROM     	PORTCbits.RC6
+
+
+
+/************ SPI EEPROM Commands ************************/
+#define EEPROM_PAGE_SIZE    	(unsigned)64
+#define EEPROM_PAGE_MASK    	(unsigned)0x003f
+#define EEPROM_CMD_READ     	(unsigned)0b00000011
+#define EEPROM_CMD_WRITE    	(unsigned)0b00000010
+#define EEPROM_CMD_WRDI    		(unsigned)0b00000100
+#define EEPROM_CMD_WREN    		(unsigned)0b00000110
+#define EEPROM_CMD_RDSR     	(unsigned)0b00000101
+#define EEPROM_CMD_WRSR     	(unsigned)0b00000001
+
+
+
+//LCD function definitions
+void LCD_cmd(unsigned char cmd);
+void init_LCD(void);
+void LCD_write(unsigned char data);
+void LCD_write_string(static char *str);
+
+
+
+
+
+//Function to generate delay
+void myMsDelay (unsigned int time)
+{
+        unsigned int i, j;
+        for (i = 0; i < time; i++)
+                for (j = 0; j < 275; j++);/*Calibrated for a 1 ms delay in MPLAB*/
+}
+
+//Function to configure the ports connected to LCD and call functions to initalise, write data and commond to LCD
+void display_string_LCD(static char *pstring1, static char *pstring2)
+{
+     LCD_write_string(pstring1);
+     myMsDelay(15);
+
+     LCD_cmd(0xC0);      // initiate cursor to second line
+     LCD_write_string(pstring2); 
+      
+     myMsDelay(1000);
+     return;
+}
+
+// Function to initialise the LCD
+void init_LCD(void)
+{
+    LCD_cmd(0x38);      // initialization of 16X2 LCD in 8bit mode
+    myMsDelay(15);
+
+    LCD_cmd(0x01);      // clear LCD
+    myMsDelay(15);
+
+    LCD_cmd(0x0C);      // cursor off
+    myMsDelay(15);
+
+    LCD_cmd(0x80);      // ---8 go to first line and --0 is for 0th position
+    myMsDelay(15);
+
+            // ---8 go to first line and --0 is for 0th position
+
+    return;
+}
+//Function to pass command to the LCD
+void LCD_cmd(unsigned char cmd)
+{
+    LCD_DATA = cmd;
+    rs = 0;
+    rw = 0;
+    en = 1;
+    myMsDelay(15);
+    en = 0;
+    myMsDelay(15);
+    return;
+}
+
+//Function to write data to the LCD
+void LCD_write(unsigned char data)
+{
+    LCD_DATA = data;
+    rs = 1;
+    rw = 0;
+    en = 1;
+    myMsDelay(15);
+    en = 0;
+    myMsDelay(15);
+    return ;
+}
+//Function to split the string into individual characters and call the LCD_write function
+void LCD_write_string(static char *str)   //store address value of the string in pointer *str
+{
+    int i = 0;
+    while (str[i] != 0)
+    {
+        LCD_write(str[i]);      // sending data on LCD byte by byte
+        myMsDelay(5);
+                i++;
+    }
+    return;
+}
+
+void SPIinit()
+{
+TRISBbits.TRISB1=0;     //SCK = output	
+TRISBbits.TRISB0=1;		//SDI = input
+TRISCbits.TRISC7=0;     //SDO = output
+PORTBbits.RB1=0;        //Clearing SDO,SCK initially
+PORTCbits.RC7=0;      
+CS_EEPROM_T=0;          //Chip select pin = Output
+CS_EEPROM =1;              //Initially salave not selected
+
+SSPSTATbits.SMP=1; 		//0 = Input data sampled at middle of data output time
+SSPSTATbits.CKE=1;      //0 = Transmit occurs on transition from Idle to active clock state
+SSPCON1=0X02;           //SPI Master mode, clock = FOSC/16	
+SSPCON1bits.CKP=0;      //0 = Idle state for clock is a low level
+SSPCON1bits.SSPEN=1;	//Enabling SPI module
+}	
+
+unsigned char SPISendReceive(unsigned char data)
+{
+SSPBUF=data;
+while(!PIR1bits.SSPIF);
+PIR1bits.SSPIF=0;
+return(SSPBUF);	
+}	
+
+void EEPROMWriteByte(unsigned char Data, unsigned int Address)
+{
+	unsigned char temp;
+	unsigned char low_address, high_address;
+	low_address = (unsigned char)(Address & 0x00ff);
+	high_address = (unsigned char)((Address>>8)&0x00ff);
+
+    //Send the Wrtie Enable Command to SPI EEPROM
+   	CS_EEPROM =0; 
+   	temp = SPISendReceive(EEPROM_CMD_WREN);
+    CS_EEPROM =1; 
+
+	//Write the Data to SPI EEPROM
+	CS_EEPROM =0;
+    temp = SPISendReceive(EEPROM_CMD_WRITE); 	//Send Write Command   
+    temp = SPISendReceive(high_address);		//Send Higher Address (A15 - A8)	
+	temp = SPISendReceive(low_address);			//Send Lower Address (A7 - A0)
+    temp = SPISendReceive(Data);				//Send data to be written
+    CS_EEPROM =1;
+
+	 // wait for completion of previous write operation
+	while (1)
+	{
+    CS_EEPROM =0;
+    temp = SPISendReceive(EEPROM_CMD_RDSR);
+    temp = SPISendReceive(0);
+    CS_EEPROM =1;
+	if (!(temp&0x01))
+    break ;
+	}	
+
+    //Send the Wrtie Disable Command to SPI EEPROM
+   	CS_EEPROM =0; 
+   	temp = SPISendReceive(EEPROM_CMD_WRDI);
+    CS_EEPROM =1; 
+}
+
+unsigned char EEPROMReadByte(unsigned int Address)
+{
+	unsigned char temp;
+	unsigned char low_address, high_address;
+	low_address = (unsigned char)(Address & 0x00ff);
+	high_address = (unsigned char)((Address>>8)&0x00ff);
+
+    CS_EEPROM =0;
+    temp = SPISendReceive(EEPROM_CMD_READ);		//Send Read Command
+
+    temp = SPISendReceive(high_address);		//Send Higher Address (A15 - A8)	
+	temp = SPISendReceive(low_address);			//Send Lower Address (A7 - A0)
+
+   	temp = SPISendReceive(0);					//Read the data from specified location
+    CS_EEPROM =1;
+    
+	return temp;
+}
+
+void main(void)
+{ 
+unsigned int i,j;
+unsigned char rx_data;
+unsigned char trans_data[] = "SHRI";
+unsigned char msg1[]="SMARTLOGIC TECH";
+unsigned char msg2[]="SPI EEPROM TEST";
+unsigned char msg3[]="writing data";
+unsigned char msg4[]="reading data";
+TRISD = 0x00;         //Configuring PORTD as output
+TRISE = 0x00;         //Configuring PORTE as output
+RCONbits.IPEN=1;       //Enabling interrupt prioritization
+INTCONbits.GIEH=1;     //Enabling high priority interrupts
+INTCONbits.GIEL=1;     //Enabling Low Priority Interrupts
+CMCON= 0x00;
+SPPCON = 0x00;
+ADCON0=0x3C; 
+ADCON1=0x0F;              //make PORTA digital as control portpins are from PORTA
+//INTCON2bits.NOT_RBPU=0;   //Enabling Pull Ups on PORTB for connecting keypad
+
+init_LCD();               //Initialize the LCD module
+SPIinit(); 				  //Initializing SPI module
+	
+//////////// SPI EEPROM write demonstration programs ////////
+display_string_LCD(msg1, msg2);
+                            
+LCD_cmd(0x01);
+LCD_write_string(msg3); 
+LCD_cmd(0xc0);
+LCD_write_string(trans_data);
+
+EEPROMWriteByte(trans_data[0], 0x0010);
+myMsDelay(15);
+EEPROMWriteByte(trans_data[1], 0x0011);
+myMsDelay(15);
+EEPROMWriteByte(trans_data[2], 0x0012);
+myMsDelay(15);
+EEPROMWriteByte(trans_data[3], 0x0013);
+myMsDelay(15);
+
+myMsDelay(1000);
+
+LCD_cmd(0x01);
+LCD_write_string(msg4); 
+LCD_cmd(0xc0);
+
+rx_data =  EEPROMReadByte(0x10);
+LCD_write (rx_data);
+myMsDelay(15);
+
+rx_data =  EEPROMReadByte(0x11);
+LCD_write (rx_data);
+myMsDelay(15);
+
+rx_data =  EEPROMReadByte(0x12);
+LCD_write (rx_data);
+myMsDelay(15);
+
+rx_data =  EEPROMReadByte(0x13);
+LCD_write (rx_data);
+myMsDelay(15);
+
+while(1);
+
+}
