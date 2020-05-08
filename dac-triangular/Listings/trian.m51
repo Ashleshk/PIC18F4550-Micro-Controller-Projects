@@ -1,0 +1,52 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        08/20/2018  08:47:55  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\dactrcode.obj TO .\Objects\trian PRINT (.\Listings\trian.m51) RAMSIZE (256)
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\dactrcode.obj (DACTRCODE)
+
+
+LINK MAP OF MODULE:  .\Objects\trian (DACTRCODE)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0110H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\trian (DACTRCODE)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        DACTRCODE
+  C:0102H         SYMBOL        HERE
+  C:0100H         SYMBOL        MAIN
+  C:0108H         SYMBOL        NXT
+  D:00A0H         SYMBOL        P2
+  C:0000H         LINE#         2
+  C:0100H         LINE#         5
+  C:0102H         LINE#         6
+  C:0104H         LINE#         7
+  C:0105H         LINE#         8
+  C:0108H         LINE#         10
+  C:010AH         LINE#         11
+  C:010BH         LINE#         12
+  C:010EH         LINE#         13
+  -------         ENDMOD        DACTRCODE
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0013H BYTE ( 0%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=272
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

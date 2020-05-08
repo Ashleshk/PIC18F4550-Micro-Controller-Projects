@@ -1,0 +1,3 @@
+".\Objects\dacsine.obj" 
+TO ".\Objects\dacsine" 
+PRINT(".\Listings\dacsine.m51") RAMSIZE(256) 

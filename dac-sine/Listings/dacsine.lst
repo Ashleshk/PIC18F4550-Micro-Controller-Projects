@@ -1,0 +1,63 @@
+A51 MACRO ASSEMBLER  DACSINE                                                              08/20/2018 08:35:02 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.5.0
+OBJECT MODULE PLACED IN .\Objects\dacsine.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE dacsine.asm SET(SMALL) DEBUG PRINT(.\Listings\dacsine.lst) OBJECT(.\Obj
+                      ects\dacsine.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0000H
+
+0000 E4                2          CLR A
+
+0001 900050            3          UP : MOV DPTR,#SINE
+
+0004 7818              4         MOV R0,#24
+
+0006 93                5         LABEL: MOVC A,@A+DPTR
+
+0007 F5A0              6          MOV P2,A
+
+0009 E4                7                  CLR A
+
+000A A3                8               INC DPTR
+
+000B D8F9              9              DJNZ R0,LABEL
+
+000D 80F2             10            SJMP UP
+
+0050                  11           ORG 050H
+
+0050                  12           SINE :
+
+0050 7FA0BFD9         13           DB      127,160,191,217,237,250,255,250,237,217,191,160,127,94,63,37,17,4,0,4,17,37,6
+                             3,94,127
+
+0054 EDFAFFFA                
+0058 EDD9BFA0                
+005C 7F5E3F25                
+0060 11040004                
+0064 11253F5E                
+0068 7F                      
+                      14          END
+
+A51 MACRO ASSEMBLER  DACSINE                                                              08/20/2018 08:35:02 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+LABEL. . . . . . .  C ADDR   0006H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+SINE . . . . . . .  C ADDR   0050H   A   
+UP . . . . . . . .  C ADDR   0001H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

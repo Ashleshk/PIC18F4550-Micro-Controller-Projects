@@ -1,0 +1,3 @@
+".\Objects\square.obj" 
+TO ".\Objects\dac" 
+PRINT(".\Listings\dac.m51") RAMSIZE(256) 

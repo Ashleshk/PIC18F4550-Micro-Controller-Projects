@@ -1,0 +1,56 @@
+A51 MACRO ASSEMBLER  DACTRCODE                                                            08/20/2018 08:47:55 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.5.0
+OBJECT MODULE PLACED IN .\Objects\dactrcode.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE dactrcode.asm SET(SMALL) DEBUG PRINT(.\Listings\dactrcode.lst) OBJECT(.
+                      \Objects\dactrcode.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0000H
+
+0000 020100            2                                     LJMP MAIN
+
+0100                   3                     ORG 0100H
+
+                       4                                 
+
+0100 7400              5                     MAIN:   MOV A ,#00H      ;INITAILIZE
+
+0102 F5A0              6                     HERE:   MOV P2,A 
+
+0104 04                7                                             INC A 
+
+0105 B4FFFA            8                                     CJNE A,#0FFH,HERE
+
+                       9                                                   
+
+0108 F5A0             10                     NXT:    MOV P2, A
+
+010A 14               11                                     DEC A 
+
+010B B400FA           12                                     CJNE A , #00H ,NXT
+
+010E 80F2             13                                     SJMP HERE
+
+                      14                                                     END
+
+A51 MACRO ASSEMBLER  DACTRCODE                                                            08/20/2018 08:47:55 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+HERE . . . . . . .  C ADDR   0102H   A   
+MAIN . . . . . . .  C ADDR   0100H   A   
+NXT. . . . . . . .  C ADDR   0108H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

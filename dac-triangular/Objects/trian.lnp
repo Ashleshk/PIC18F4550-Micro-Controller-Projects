@@ -1,0 +1,3 @@
+".\Objects\dactrcode.obj" 
+TO ".\Objects\trian" 
+PRINT(".\Listings\trian.m51") RAMSIZE(256) 

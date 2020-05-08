@@ -1,0 +1,71 @@
+A51 MACRO ASSEMBLER  SQUARE                                                               08/20/2018 08:29:14 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.5.0
+OBJECT MODULE PLACED IN .\Objects\square.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE square.a51 SET(SMALL) DEBUG PRINT(.\Listings\square.lst) OBJECT(.\Objec
+                      ts\square.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0000H
+
+0000 020100            2                             LJMP MAIN
+
+0100                   3                             ORG 0100H
+
+0100 7400              4     MAIN:   MOV A,#00H
+
+0102 F5A0              5                                     MOV P2 , A
+
+0104 310D              6                                             ACALL DELAY
+
+                       7                   
+
+                       8              
+
+0106 75A0FF            9                                     MOV P2,#0FFH
+
+0109 310D             10                                             ACALL DELAY
+
+010B 80F3             11                                             SJMP MAIN
+
+                      12                        
+
+010D                  13                     DELAY:
+
+                      14                    
+
+010D 7A10             15                                     MOV R2 ,#10H
+
+010F 7BFF             16                                                     UP:     MOV R3,#0FFH
+
+0111 DBFE             17                                     AGN:DJNZ R3,AGN
+
+0113 DAFA             18                                     DJNZ R2, UP
+
+                      19                  
+
+0115 22               20                                     RET
+
+                      21                                                             END
+
+A51 MACRO ASSEMBLER  SQUARE                                                               08/20/2018 08:29:14 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AGN. . . . . . . .  C ADDR   0111H   A   
+DELAY. . . . . . .  C ADDR   010DH   A   
+MAIN . . . . . . .  C ADDR   0100H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+UP . . . . . . . .  C ADDR   010FH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
