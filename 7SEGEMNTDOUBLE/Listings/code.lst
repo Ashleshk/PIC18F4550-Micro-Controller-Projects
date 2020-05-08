@@ -1,0 +1,116 @@
+A51 MACRO ASSEMBLER  CODE                                                                 08/20/2018 09:59:31 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.5.0
+OBJECT MODULE PLACED IN .\Objects\code.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE code.asm SET(SMALL) DEBUG PRINT(.\Listings\code.lst) OBJECT(.\Objects\c
+                      ode.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0000H
+
+0000 9003E8            2             MOV DPTR ,#1000
+
+0003 759000            3             MOV P1,#00H
+
+0006 75A000            4             MOV P2,#00H
+
+0009 7900              5             MOV R1,#00H
+
+000B 7800              6             MOV R0,#00H
+
+                       7             
+
+                       8             
+
+000D E8                9             L1: MOV A , R0
+
+000E 93               10                     MOVC A ,@A+DPTR
+
+000F 08               11                     INC R0
+
+0010 B80AFA           12                     CJNE R0,#0AH,L1
+
+0013 7800             13                     MOV R0,#00H
+
+0015 D290             14                     SETB P1.0
+
+0017 F580             15                     MOV P0,A
+
+0019 112F             16                     ACALL DELAY
+
+001B C290             17                     CLR P1.0
+
+                      18                     
+
+001D E9               19                     MOV A ,R1
+
+001E 93               20                     MOVC A, @A+DPTR
+
+001F 09               21                     INC R1
+
+0020 B90AEA           22                     CJNE R1,#0AH,L1
+
+0023 7900             23                     MOV R1,#00H
+
+0025 D291             24                     SETB P1.1
+
+0027 F580             25                     MOV P0,A
+
+0029 112F             26                     ACALL DELAY
+
+002B C291             27                     CLR P1.1
+
+002D 80FE             28                     SJMP $  
+
+                      29                             
+
+002F 7910             30     DELAY:  MOV R1,#10H
+
+0031 7890             31                     TOP:    MOV R0,#90H
+
+0033 7AFF             32                     UPP:    MOV R2,#0FFH
+
+0035 DAFE             33                     AGN:    DJNZ R2,AGN
+
+0037 D8FA             34                                     DJNZ R0,UPP
+
+0039 D9F6             35                                     DJNZ R1,TOP
+
+003B 22               36                                     RET
+
+                      37     
+
+1000                  38     ORG 1000H
+
+1000 C0F9A4B0         39                     DB 0C0H,0F9H,0A4H,0B0H,99H,92H,82H,0F8H,80H,90H
+
+1004 999282F8                
+1008 8090                    
+                      40     
+
+                      41     END
+
+A51 MACRO ASSEMBLER  CODE                                                                 08/20/2018 09:59:31 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AGN. . . . . . . .  C ADDR   0035H   A   
+DELAY. . . . . . .  C ADDR   002FH   A   
+L1 . . . . . . . .  C ADDR   000DH   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+TOP. . . . . . . .  C ADDR   0031H   A   
+UPP. . . . . . . .  C ADDR   0033H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

@@ -1,0 +1,3 @@
+".\Objects\code.obj" 
+TO ".\Objects\DOUBLE" 
+PRINT(".\Listings\DOUBLE.m51") RAMSIZE(256) 
