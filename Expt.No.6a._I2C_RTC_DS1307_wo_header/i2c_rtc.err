@@ -1,0 +1,4 @@
+Warning[2054] D:\Logic\ExplorePIC_CD_Contents\Explore_Universal_Board\P18F4550_with_Bootloader_Codes\Expt.No.6a._I2C_RTC_DS1307_wo_header\i2c_rtc.c 49 : suspicious pointer conversion
+Warning[2054] D:\Logic\ExplorePIC_CD_Contents\Explore_Universal_Board\P18F4550_with_Bootloader_Codes\Expt.No.6a._I2C_RTC_DS1307_wo_header\i2c_rtc.c 51 : suspicious pointer conversion
+Warning[2054] D:\Logic\ExplorePIC_CD_Contents\Explore_Universal_Board\P18F4550_with_Bootloader_Codes\Expt.No.6a._I2C_RTC_DS1307_wo_header\i2c_rtc.c 54 : suspicious pointer conversion
+Warning[2054] D:\Logic\ExplorePIC_CD_Contents\Explore_Universal_Board\P18F4550_with_Bootloader_Codes\Expt.No.6a._I2C_RTC_DS1307_wo_header\i2c_rtc.c 56 : suspicious pointer conversion
