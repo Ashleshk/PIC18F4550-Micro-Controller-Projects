@@ -1,0 +1,3 @@
+".\Objects\stepper2.obj" 
+TO ".\Objects\code2" 
+PRINT(".\Listings\code2.m51") RAMSIZE(256) 

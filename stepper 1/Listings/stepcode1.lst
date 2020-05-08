@@ -1,0 +1,73 @@
+A51 MACRO ASSEMBLER  STEPCODE1                                                            08/20/2018 09:02:42 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.5.0
+OBJECT MODULE PLACED IN .\Objects\stepcode1.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE stepcode1.asm SET(SMALL) DEBUG PRINT(.\Listings\stepcode1.lst) OBJECT(.
+                      \Objects\stepcode1.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000 7466              1     MOV A, #66H    ; LOAD THE STEP SEQUENCE
+
+                       2                                          
+
+0002                   3             BACK :
+
+0002 F590              4                     MOV P1, A                       ; LOAD SEQUENCE TO PORT
+
+0004 23                5                     RL A        ; CHANGE SEQUENCE ROTATE CLOCKWISE
+
+0005 110D              6                     ACALL DELAY             ; WAIT FOR IT
+
+0007 110D              7                             ACALL DELAY
+
+0009 110D              8                             ACALL DELAY
+
+000B 80F5              9                     SJMP BACK               ; NOW KEEP GOING
+
+                      10                                   
+
+000D                  11             DELAY :
+
+000D 7A64             12                     MOV R2, #100
+
+                      13                                  
+
+000F                  14                     H1 :
+
+000F 7BFF             15                     MOV R3, #255
+
+                      16                                
+
+0011                  17                      H2 :
+
+0011 DBFE             18                     DJNZ R3, H2
+
+0013 DAFA             19                     DJNZ R2, H1
+
+0015 22               20                     RET
+
+                      21          
+
+                      22                                     END   
+
+A51 MACRO ASSEMBLER  STEPCODE1                                                            08/20/2018 09:02:42 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+BACK . . . . . . .  C ADDR   0002H   A   
+DELAY. . . . . . .  C ADDR   000DH   A   
+H1 . . . . . . . .  C ADDR   000FH   A   
+H2 . . . . . . . .  C ADDR   0011H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
