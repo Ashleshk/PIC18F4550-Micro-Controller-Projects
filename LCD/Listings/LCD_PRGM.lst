@@ -1,0 +1,146 @@
+A51 MACRO ASSEMBLER  LCD_PRGM                                                             07/29/2018 02:45:37 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.5.0
+OBJECT MODULE PLACED IN .\Objects\LCD_PRGM.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE LCD_PRGM.a51 SET(SMALL) PRINT(.\Listings\LCD_PRGM.lst) OBJECT(.\Objects
+                      \LCD_PRGM.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0000H 
+
+                       2             
+
+  0090                 3     RS EQU P1.0 
+
+  0091                 4     RW EQU P1.1
+
+  0092                 5     EN EQU P1.2
+
+                       6     
+
+                       7     
+
+0000 7438              8     MOV A, #38H 
+
+0002 F5A0              9     MOV P2, A 
+
+0004 112A             10     ACALL COMMAND
+
+                      11     
+
+0006 740E             12     MOV A, #0EH 
+
+0008 F5A0             13     MOV P2, A 
+
+000A 112A             14     ACALL COMMAND
+
+                      15     
+
+000C 7401             16     MOV A, #01H 
+
+000E F5A0             17     MOV P2, A 
+
+0010 112A             18     ACALL COMMAND
+
+                      19     
+
+0012 7480             20     MOV A, #80H 
+
+0014 F5A0             21     MOV P2, A 
+
+0016 112A             22     ACALL COMMAND
+
+                      23     
+
+                      24     
+
+0018 7441             25     MOV A, #'A' 
+
+001A F5A0             26     MOV P2, A 
+
+001C 1135             27     ACALL SDATA
+
+001E 744D             28     MOV A, #'M' 
+
+0020 F5A0             29     MOV P2, A 
+
+0022 1135             30     ACALL SDATA
+
+0024 7444             31     MOV A, #'D'
+
+0026 F5A0             32     MOV P2, A 
+
+0028 1135             33     ACALL SDATA
+
+                      34     
+
+                      35     
+
+002A C290             36     COMMAND: CLR RS 
+
+002C C291             37     CLR RW
+
+002E D292             38     SETB EN 
+
+0030 1140             39     ACALL DELAY
+
+0032 C292             40     CLR EN
+
+0034 22               41     RET
+
+                      42     
+
+0035 D290             43     SDATA: SETB RS 
+
+0037 C291             44     CLR RW
+
+0039 D292             45     SETB EN 
+
+003B 1140             46     ACALL DELAY
+
+003D C292             47     CLR EN  
+
+003F 22               48     RET
+
+                      49     
+
+0040 7EFF             50     DELAY: MOV R6,#0FFH
+
+0042 7FFF             51     L1: MOV R7,#0FFH
+
+0044 DFFE             52     L2: DJNZ R7, L2
+
+0046 DEFA             53     DJNZ R6, L1
+
+0048 22               54     RET
+
+                      55     
+
+                      56     END
+
+A51 MACRO ASSEMBLER  LCD_PRGM                                                             07/29/2018 02:45:37 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+COMMAND. . . . . .  C ADDR   002AH   A   
+DELAY. . . . . . .  C ADDR   0040H   A   
+EN . . . . . . . .  B ADDR   0090H.2 A   
+L1 . . . . . . . .  C ADDR   0042H   A   
+L2 . . . . . . . .  C ADDR   0044H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+RS . . . . . . . .  B ADDR   0090H.0 A   
+RW . . . . . . . .  B ADDR   0090H.1 A   
+SDATA. . . . . . .  C ADDR   0035H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
